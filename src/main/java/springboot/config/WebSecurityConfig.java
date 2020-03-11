@@ -46,16 +46,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers("/authentication").permitAll()
-                .antMatchers("/authenticationaaa").permitAll()
-                .antMatchers("/user").permitAll()
-                .antMatchers("/j_spring_security_check").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/products").hasAnyRole("MANAGER")
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
-        http.authorizeRequests().and().formLogin()//
+       /* http.authorizeRequests().and().formLogin()//
         // Submit URL của trang login
         .loginProcessingUrl("/j_spring_security_check") // Submit URL
         .loginPage("/login")//
@@ -64,7 +61,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .usernameParameter("username")//
         .passwordParameter("password")
         // Cấu hình cho Logout Page.
-        .and().logout().logoutUrl("/logout").logoutSuccessUrl("/logoutSuccessful");
+        .and().logout().logoutUrl("/logout").logoutSuccessUrl("/logoutSuccessful");*/
     }
 
     @Bean

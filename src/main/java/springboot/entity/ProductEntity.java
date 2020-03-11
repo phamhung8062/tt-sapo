@@ -8,8 +8,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 @Table(name = "product")
 public class ProductEntity extends BaseEntity {
@@ -51,8 +49,8 @@ public class ProductEntity extends BaseEntity {
 	 
 	@Column(name = "product_memory")
 	private String memory;
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.EAGER)
+	
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categoryproduct_id")
     private CategoryProductEntity categoryproduct;
 	
