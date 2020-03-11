@@ -46,6 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers("/authentication").permitAll()
+                .antMatchers("/authenticationaaa").permitAll()
                 .antMatchers("/user").permitAll()
                 .antMatchers("/j_spring_security_check").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/products").hasAnyRole("MANAGER")
