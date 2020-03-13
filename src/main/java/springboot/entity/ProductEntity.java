@@ -1,12 +1,18 @@
 package springboot.entity;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "product")
@@ -50,10 +56,35 @@ public class ProductEntity extends BaseEntity {
 	@Column(name = "product_memory")
 	private String memory;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "categoryproduct_id")
-    private CategoryProductEntity categoryproduct;
+	@OneToMany(
+	        mappedBy = "productEntity",
+	        fetch = FetchType.LAZY
+	    )
+	private List<OptionEntity> Options = new ArrayList<>();
 	
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "version_id")
+    private VersionEntity versions;
+	
+	public List<OptionEntity> getOptions() {
+		return Options;
+	}
+
+	public void setOptions(List<OptionEntity> options) {
+		Options = options;
+	}
+
+	public VersionEntity getVersions() {
+		return versions;
+	}
+
+	public void setVersions(VersionEntity versions) {
+		this.versions = versions;
+	}
+
+	
+
 	public String getName() {
 		return name;
 	}
@@ -105,15 +136,6 @@ public class ProductEntity extends BaseEntity {
 
 	public void setBattery(String battery) {
 		this.battery = battery;
-	}
-
-	
-	public CategoryProductEntity getCategoryproduct() {
-		return categoryproduct;
-	}
-
-	public void setCategoryproduct(CategoryProductEntity categoryproduct) {
-		this.categoryproduct = categoryproduct;
 	}
 
 	public void setName(String name) {

@@ -1,5 +1,7 @@
 package springboot.dto;
 
+import java.util.List;
+
 public class ProductDTO extends AbstractDTO<ProductDTO> {
 
 	private String name;
@@ -15,10 +17,23 @@ public class ProductDTO extends AbstractDTO<ProductDTO> {
 	private Integer amount; 
 	private Integer status; 
 	private String battery; 
-	private String productName; 
-	private String productProducer;
-	private String productDescribe;
+	private	List<OptionsDTO> options;
+
+	private VersionDTO versionDTO;
 	
+	
+	public VersionDTO getVersionDTO() {
+		return versionDTO;
+	}
+	public void setVersionDTO(VersionDTO versionDTO) {
+		this.versionDTO = versionDTO;
+	}
+	public List<OptionsDTO> getOptions() {
+		return options;
+	}
+	public void setOptions(List<OptionsDTO> options) {
+		this.options = options;
+	}
 	public String getMemory() {
 		return memory;
 	}
@@ -97,23 +112,4 @@ public class ProductDTO extends AbstractDTO<ProductDTO> {
 	public void setBattery(String battery) {
 		this.battery = battery;
 	}
-	public String getProductName() {
-		return productName;
-	}
-	public void setProductName(String productName) {
-		this.productName = productName;
-	}
-	public String getProductProducer() {
-		return productProducer;
-	}
-	public void setProductProducer(String productProducer) {
-		this.productProducer = productProducer;
-	}
-	public String getProductDescribe() {
-		return productDescribe;
-	}
-	public void setProductDescribe(String productDescribe) {
-		this.productDescribe = productDescribe;
-	} 
-	
 }

@@ -1,6 +1,8 @@
 package springboot.repository.custom;
-import java.util.List;
+
+import springboot.entity.ProductEntity;
 
 public interface ProductEntityRepositoryCustom{
- List<Object[]> findCustom();
+   void deleteListOptions(Long id);
+   ProductEntity findVersion(String name);
 }

@@ -27,22 +27,22 @@ public class ProductAPI {
 		return  productservice.findAll();
 	}
 	
-	@PostMapping(value="api/insert/product",consumes={"application/json"})
+	@PostMapping(value="api/insert/product")
 	public void save(@RequestBody ProductDTO dto) {
 		 productservice.save(dto);
 	}
 	
-	@PutMapping(value="api/update/product",consumes={"application/json"})
+	@PutMapping(value="api/update/product")
 	public void update(@RequestBody ProductDTO dto) {
 		 productservice.save(dto);
 	}
 	
-	@DeleteMapping(value="api/delete/product",consumes={"application/json"})
-	public void delete(@RequestBody ProductDTO dto) {
-		 productservice.delete(dto);
+	@DeleteMapping(value="api/delete/product")
+	public void delete(@RequestParam Long id) {
+		 productservice.delete(id);
 	}
 	
-	@GetMapping(value="api/productbyid")
+	@GetMapping(value="api/product")
 	public ProductDTO Product(@RequestParam Long id) {
 		return  productservice.findById(id);
 	}

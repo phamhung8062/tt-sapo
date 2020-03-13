@@ -3,34 +3,52 @@ package springboot.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "options")
 public class OptionEntity extends BaseEntity {
 	
-	@Column(name = "option_color")
-	private String  color;
+	@Column(name = "option_name")
+	private String  name;
 	
-	@Column(name = "option_memory")
-	private String memory;
+	@Column(name = "option_value")
+	private String value;
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private ProductEntity productEntity;
 
-
-	public String getColor() {
-		return color;
+	public ProductEntity getProductEntity() {
+		return productEntity;
 	}
 
-	public void setColor(String color) {
-		this.color = color;
+	public void setProductEntity(ProductEntity productEntity) {
+		this.productEntity = productEntity;
 	}
 
-	public String getMemory() {
-		return memory;
+	public String getName() {
+		return name;
 	}
 
-	public void setMemory(String memory) {
-		this.memory = memory;
+	public void setName(String name) {
+		this.name = name;
 	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	
 
 	
 }
