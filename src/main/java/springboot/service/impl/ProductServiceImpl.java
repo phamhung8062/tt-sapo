@@ -11,13 +11,11 @@ import org.springframework.stereotype.Service;
 import springboot.converter.OptionsConverter;
 import springboot.converter.ProductConverter;
 import springboot.converter.VersionsConverter;
-import springboot.dto.OptionsDTO;
 import springboot.dto.ProductDTO;
 import springboot.entity.OptionEntity;
 import springboot.entity.ProductEntity;
 import springboot.entity.VersionEntity;
 import springboot.repository.OptionEntityRepository;
-//import springboot.repository.ProductCategoryEntityRepository;
 import springboot.repository.ProductEntityRepository;
 import springboot.repository.VersionEntityRepository;
 import springboot.service.IProductService;
@@ -31,9 +29,6 @@ public class ProductServiceImpl implements IProductService {
 	ProductConverter productconverter;
 
 	@Autowired
-	ProductEntityRepository productRepository;
-
-	@Autowired
 	VersionEntityRepository versionEntityRepository;
 
 	@Autowired
@@ -45,26 +40,14 @@ public class ProductServiceImpl implements IProductService {
 	@Autowired
 	VersionsConverter versionsConverter;
 
-	/*
-	 * @Override public List<ProductDTO> findAllCustom() { List<Object[]>
-	 * productEntities= productrepository.findCustom(); List<ProductDTO>
-	 * productDTOs=new ArrayList<>(); for (Object[] a : productEntities) {
-	 * ProductDTO b= new ProductDTO(); b.setDisplay(a[0].toString());
-	 * b.setCpu(a[1].toString());
-	 * 
-	 * b.setImage(a[4].toString()); b.setCamera(a[5].toString());
-	 * 
-	 * productDTOs.add(b); } return productDTOs; }
-	 */
-
 	@Override
 	public List<ProductDTO> findAll() {
-		List<ProductEntity> entities = productRepository.findAll();
+		List<ProductEntity> entities = productrepository.findAll();
 		List<ProductDTO> dtos = new ArrayList<>();
 		for (ProductEntity productEntity : entities) {
 			ProductDTO a = new ProductDTO();
 			a = productconverter.convertToDTO(productEntity);
-			a.setVersionDTO(versionsConverter.convertToDTO(productEntity.getVersions()));
+			a.setVersion(versionsConverter.convertEntityToDTOList(productEntity.getVersions()));
 			dtos.add(a);
 		}
 		return dtos;
@@ -74,79 +57,55 @@ public class ProductServiceImpl implements IProductService {
 	@Transactional
 	public void save(ProductDTO dto) {
 		ProductEntity entity = productconverter.convertToEntity(dto);
-		checkOptions(dto.getOptions());
-		if (!CheckVersion(dto.getVersionDTO().getName())) {
-			System.out.println(" Phiên Bản Đã Tồn Tại");
+		if (!checkProduct(entity.getName())) {
+			System.out.println("Sản phẩm đã tồn tại trong kho !");
 		} else {
-			VersionEntity versionEntity = versionsConverter.convertToEntity(dto.getVersionDTO());
-			versionEntityRepository.save(versionEntity);
-			entity.setVersions(versionEntity);
-
-			entity = productrepository.save(entity);
-			List<OptionEntity> optionEntities = optionsConverter.convertEntityToDTOList(dto.getOptions());
-			for (OptionEntity optionEntity : optionEntities) {
-				optionEntity.setProductEntity(entity);
-				optionEntityRepository.save(optionEntity);
-			}
-		}
-	}
-
-	public Boolean CheckProduct(String nameversion, List<OptionsDTO> optios) {
-		List<ProductEntity> entities = productRepository.findAll();
-		for (ProductEntity s : entities) {
-			if (s.getVersions().getName().toString().equals(nameversion)) {
-				List<OptionEntity> entities2 = s.getOptions();
-				if (entities2.size() == optios.size()) {
-					for (OptionEntity s1 : entities2) {
-						for (OptionsDTO s2 : optios) {
-							if (!s1.getName().equals(s2.getName()) && !s1.getValue().equals(s2.getValue())) {
-								return true;
-							}
-							return false;
-						}
+			List<VersionEntity> versionEntity = versionsConverter.convertEntityToDTOList1( dto.getVersion());
+			for ( VersionEntity version : versionEntity) {
+				if (!CheckVersion(version.getName().toString())) {
+					System.out.println("Đã tồn tại phiên bản");
+				} else {
+					entity=productrepository.save(entity);
+					version.setProducts(entity);
+					versionEntityRepository.save(version);
+					List<OptionEntity> optionEntities = checkOptions(version.getOptions());
+					for (OptionEntity optionEntity : optionEntities) {
+						optionEntity.setVersion(version);
+						optionEntityRepository.save(optionEntity);
 					}
 				}
-				return true;
-			}
-			return true;
-		}
-		return true;
-	}
-
-	public Boolean CheckVersion(String nameversion) {
-		if (nameversion != null) {
-			List<VersionEntity> versionEntities = versionEntityRepository.findAll();
-			for (VersionEntity s : versionEntities) {
-				if (s.getName().equals(nameversion)) {
-					return false;
-				}
 			}
 		}
-		return true;
 	}
 
 	@Override
 	@Transactional
 	public void update(ProductDTO dto) {
 		ProductEntity entity = productconverter.convertToEntity(dto);
-
-		VersionEntity versionEntity = versionsConverter.convertToEntity(dto.getVersionDTO());
-		versionEntityRepository.save(versionEntity);
-		entity.setVersions(versionEntity);
-
-		entity = productrepository.save(entity);
-		List<OptionEntity> optionEntities = optionsConverter.convertEntityToDTOList(dto.getOptions());
-		for (OptionEntity optionEntity : optionEntities) {
-			optionEntity.setProductEntity(entity);
-			optionEntityRepository.save(optionEntity);
+		List<VersionEntity> versionEntity = versionsConverter.convertEntityToDTOList1(dto.getVersion());
+		for (VersionEntity version : versionEntity) {
+			if (!CheckVersion(version.getName().toString())) {
+				System.out.println("Đã tồn tại phiên bản");
+				entity = productrepository.save(entity);
+				updateOption(checkOptions(version.getOptions()), version);
+			} else {
+				version.setProducts(entity);
+				version=versionEntityRepository.save(version);
+				updateOption(checkOptions(version.getOptions()), version);
+			}
 		}
 	}
 
 	@Override
 	@Transactional
 	public void delete(Long id) {
-		ProductEntity entity = productRepository.getOne(id);
-		productrepository.deleteListOptions(id);
+		ProductEntity entity = productrepository.getOne(id);
+		for (VersionEntity versionEntity : entity.getVersions()) {
+			for(OptionEntity op:versionEntity.getOptions()) {
+				optionEntityRepository.delete(op);
+			}
+			versionEntityRepository.delete(versionEntity);
+		}
 		productrepository.delete(entity);
 
 	}
@@ -156,19 +115,54 @@ public class ProductServiceImpl implements IProductService {
 		ProductEntity entity = productrepository.getOne(id);
 		ProductDTO a = new ProductDTO();
 		a = productconverter.convertToDTO(entity);
-		a.setVersionDTO(versionsConverter.convertToDTO(entity.getVersions()));
+		a.setVersion(versionsConverter.convertEntityToDTOList(entity.getVersions()));
 		return a;
 	}
-	
-	@SuppressWarnings("unused")
-	private List<OptionsDTO> checkOptions(List<OptionsDTO> options) {
-        for (int i = 0; i < options.size(); i++)
-            for (int j = i + 1; j < options.size(); j++) {
-                if (options.get(i).getName().equals(options.get(j).getName())) {
-                    options.remove(options.get(i));
-                }
-            }
-        return options;
-    }
 
+	public Boolean CheckVersionupdate(List<VersionEntity> productEntity, String nameversion) {
+		for (VersionEntity s : productEntity) {
+			if (s.getName().equals(nameversion)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public Boolean CheckVersion(String nameversion) {
+		List<ProductEntity> productEntity = productrepository.findAll();
+		for (ProductEntity product : productEntity) {
+			for (VersionEntity s : product.getVersions()) {
+				if (s.getName().equals(nameversion)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	private List<OptionEntity> checkOptions(List<OptionEntity> options) {
+		for (int i = 0; i < options.size(); i++)
+			for (int j = i + 1; j < options.size(); j++) {
+				if (options.get(i).getName().equals(options.get(j).getName())) {
+					options.remove(options.get(i));
+				}
+			}
+		return options;
+	}
+
+	private Boolean checkProduct(String nameProduct) {
+		List<ProductEntity> productEntities = productrepository.findAll();
+		for (ProductEntity pro : productEntities) {
+			if (pro.getName().equals(nameProduct))
+				return false;
+		}
+		return true;
+	}
+
+	private void updateOption(List<OptionEntity> optionEntities, VersionEntity version) {
+		for (OptionEntity optionEntity : optionEntities) {
+			optionEntity.setVersion(version);
+			optionEntityRepository.save(optionEntity);
+		}
+	}
 }

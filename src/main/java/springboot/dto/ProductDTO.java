@@ -1,44 +1,48 @@
 package springboot.dto;
 
 import java.util.List;
-
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import annotation.Battery;
+import annotation.Camera;
 public class ProductDTO extends AbstractDTO<ProductDTO> {
-
+	
+	//@NotBlank(message = "Name Product may not be null")
 	private String name;
+	
 	private Integer ram;
+	
+	//@NotBlank(message = "CPU may not be null")
 	private String cpu;
+	
+	//@NotBlank(message = "GPU may not be null")
 	private String gpu; 
+	
+	//@NotBlank(message = "IMAGE may not be null")
 	private String image;
+	
+	//@NotBlank(message = "display may not be null")
 	private String display;
+	
+	//@Camera
 	private String camera;
-	private Integer price;
-	private String color; 
-	private String memory; 
+	
+	//@NotNull(message = "amount may not be null")
 	private Integer amount; 
+	
+	//@NotNull(message = "status may not be null")
 	private Integer status; 
+	
+	//@Battery
 	private String battery; 
-	private	List<OptionsDTO> options;
 
-	private VersionDTO versionDTO;
-	
-	
-	public VersionDTO getVersionDTO() {
-		return versionDTO;
+	private	List<VersionDTO> version;
+
+	public List<VersionDTO> getVersion() {
+		return version;
 	}
-	public void setVersionDTO(VersionDTO versionDTO) {
-		this.versionDTO = versionDTO;
-	}
-	public List<OptionsDTO> getOptions() {
-		return options;
-	}
-	public void setOptions(List<OptionsDTO> options) {
-		this.options = options;
-	}
-	public String getMemory() {
-		return memory;
-	}
-	public void setMemory(String memory) {
-		this.memory = memory;
+	public void setVersion(List<VersionDTO> version) {
+		this.version = version;
 	}
 	public String getName() {
 		return name;
@@ -81,18 +85,6 @@ public class ProductDTO extends AbstractDTO<ProductDTO> {
 	}
 	public void setCamera(String camera) {
 		this.camera = camera;
-	}
-	public Integer getPrice() {
-		return price;
-	}
-	public void setPrice(Integer price) {
-		this.price = price;
-	}
-	public String getColor() {
-		return color;
-	}
-	public void setColor(String color) {
-		this.color = color;
 	}
 	public Integer getAmount() {
 		return amount;

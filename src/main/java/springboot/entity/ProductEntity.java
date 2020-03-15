@@ -7,111 +7,75 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import annotation.Battery;
+import annotation.Camera;
 
 @Entity
 @Table(name = "product")
 public class ProductEntity extends BaseEntity {
+	
+	@NotBlank(message = "Name Product may not be null")
 	@Column(name = "product_name")
 	private String name;
 
 	@Column(name = "product_ram")
 	private Integer ram;
-
+	
+	@NotBlank(message = "CPU may not be null")
 	@Column(name = "product_cpu")
 	private String cpu;
-
+	
+	@NotBlank(message = "GPU may not be null")
 	@Column(name = "product_gpu")
 	private String gpu; 
 	
+	@NotBlank(message = "IMAGE may not be null")
 	@Column(name = "product_image")
 	private String image;
-
+	
+	@NotBlank(message = "display may not be null")
 	@Column(name = "product_display")
 	private String display;
-
+	
+	@Camera
 	@Column(name = "product_camera")
 	private String camera;
-
-	@Column(name = "product_price")
-	private Integer price;
 	
-	@Column(name = "product_color")
-	private String color; 
-	
+	@NotNull(message = "amount may not be null")
 	@Column(name = "product_amount")
 	private Integer amount; 
 	
+	@NotNull(message = "status may not be null")
 	@Column(name = "product_status")
 	private Integer status; 
 	
+	@Battery
 	@Column(name = "product_battery")
 	private String battery; 
-	 
-	@Column(name = "product_memory")
-	private String memory;
+	
 	
 	@OneToMany(
-	        mappedBy = "productEntity",
+	        mappedBy = "products",
 	        fetch = FetchType.LAZY
 	    )
-	private List<OptionEntity> Options = new ArrayList<>();
+	private List<VersionEntity> versions = new ArrayList<>();
 	
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "version_id")
-    private VersionEntity versions;
-	
-	public List<OptionEntity> getOptions() {
-		return Options;
-	}
 
-	public void setOptions(List<OptionEntity> options) {
-		Options = options;
-	}
-
-	public VersionEntity getVersions() {
+	public List<VersionEntity> getVersions() {
 		return versions;
 	}
 
-	public void setVersions(VersionEntity versions) {
+	public void setVersions(List<VersionEntity> versions) {
 		this.versions = versions;
 	}
 
-	
-
 	public String getName() {
 		return name;
-	}
-
-	public String getMemory() {
-		return memory;
-	}
-
-	public void setMemory(String memory) {
-		this.memory = memory;
-	}
-
-	public Integer getPrice() {
-		return price;
-	}
-
-	public void setPrice(Integer price) {
-		this.price = price;
-	}
-
-
-	public String getColor() {
-		return color;
-	}
-
-	public void setColor(String color) {
-		this.color = color;
 	}
 
 	public Integer getAmount() {
@@ -190,14 +154,4 @@ public class ProductEntity extends BaseEntity {
 		this.camera = camera;
 	}
 
-	public Integer getProduct_price() {
-		return price;
-	}
-
-	public void setProduct_price(Integer price) {
-		this.price = price;
-	}
-
-
-	
 }

@@ -19,17 +19,18 @@ public class OptionEntity extends BaseEntity {
 	
 	@Column(name = "option_value")
 	private String value;
-	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private ProductEntity productEntity;
+    @JoinColumn(name = "version_id")
+    private VersionEntity version;
+	
+	
 
-	public ProductEntity getProductEntity() {
-		return productEntity;
+	public VersionEntity getVersion() {
+		return version;
 	}
 
-	public void setProductEntity(ProductEntity productEntity) {
-		this.productEntity = productEntity;
+	public void setVersion(VersionEntity version) {
+		this.version = version;
 	}
 
 	public String getName() {
@@ -47,9 +48,12 @@ public class OptionEntity extends BaseEntity {
 	public void setValue(String value) {
 		this.value = value;
 	}
+   
+	
 
 	
 
+	
 	
 }
 

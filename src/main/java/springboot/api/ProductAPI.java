@@ -17,6 +17,7 @@ import springboot.service.IProductService;
 
 @CrossOrigin
 @RestController
+
 public class ProductAPI {
 	@Autowired
 	private IProductService productservice;
@@ -28,13 +29,13 @@ public class ProductAPI {
 	}
 	
 	@PostMapping(value="api/insert/product")
-	public void save(@RequestBody ProductDTO dto) {
+	public void save( @RequestBody ProductDTO dto) {
 		 productservice.save(dto);
 	}
 	
 	@PutMapping(value="api/update/product")
-	public void update(@RequestBody ProductDTO dto) {
-		 productservice.save(dto);
+	public void update( @RequestBody ProductDTO dto) {
+		 productservice.update(dto);
 	}
 	
 	@DeleteMapping(value="api/delete/product")
