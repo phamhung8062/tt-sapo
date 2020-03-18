@@ -2,6 +2,8 @@ package springboot.api;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,7 +31,7 @@ public class ProductAPI {
 	}
 	
 	@PostMapping(value="api/insert/product")
-	public void save( @RequestBody ProductDTO dto) {
+	public void save(@Valid @RequestBody ProductDTO dto) {
 		 productservice.save(dto);
 	}
 	

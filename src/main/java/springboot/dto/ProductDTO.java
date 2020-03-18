@@ -1,41 +1,43 @@
 package springboot.dto;
 
 import java.util.List;
+
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import annotation.Battery;
 import annotation.Camera;
 public class ProductDTO extends AbstractDTO<ProductDTO> {
 	
-	//@NotBlank(message = "Name Product may not be null")
+	@NotBlank(message = "Name Product may not be null")
 	private String name;
 	
 	private Integer ram;
 	
-	//@NotBlank(message = "CPU may not be null")
+	@NotBlank(message = "CPU may not be null")
 	private String cpu;
 	
-	//@NotBlank(message = "GPU may not be null")
+	@NotBlank(message = "GPU may not be null")
 	private String gpu; 
 	
-	//@NotBlank(message = "IMAGE may not be null")
+	@NotBlank(message = "IMAGE may not be null")
 	private String image;
 	
-	//@NotBlank(message = "display may not be null")
+	@NotBlank(message = "display may not be null")
 	private String display;
 	
-	//@Camera
+	@Camera
 	private String camera;
 	
-	//@NotNull(message = "amount may not be null")
+	@NotNull(message = "amount may not be null")
 	private Integer amount; 
 	
-	//@NotNull(message = "status may not be null")
+	@NotNull(message = "status may not be null")
 	private Integer status; 
 	
-	//@Battery
+	@Battery
 	private String battery; 
-
+    @Valid
 	private	List<VersionDTO> version;
 
 	public List<VersionDTO> getVersion() {

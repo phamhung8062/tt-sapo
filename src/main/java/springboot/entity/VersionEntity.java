@@ -18,11 +18,11 @@ import annotation.Price;
 @Entity
 @Table(name = "versions")
 public class VersionEntity extends BaseEntity {
-	@NotBlank(message = "VersionName may not be null")
+	//@NotBlank(message = "VersionName may not be null")
 	@Column(name = "version_name")
 	private String  name;
 	
-	@Price
+	//@Price
 	@Column(name = "version_price")
 	private Integer price;
 	

@@ -19,42 +19,42 @@ import annotation.Camera;
 @Table(name = "product")
 public class ProductEntity extends BaseEntity {
 	
-	@NotBlank(message = "Name Product may not be null")
+	//@NotBlank(message = "Name Product may not be null")
 	@Column(name = "product_name")
 	private String name;
 
 	@Column(name = "product_ram")
 	private Integer ram;
 	
-	@NotBlank(message = "CPU may not be null")
+	//@NotBlank(message = "CPU may not be null")
 	@Column(name = "product_cpu")
 	private String cpu;
 	
-	@NotBlank(message = "GPU may not be null")
+	//@NotBlank(message = "GPU may not be null")
 	@Column(name = "product_gpu")
 	private String gpu; 
 	
-	@NotBlank(message = "IMAGE may not be null")
+	//@NotBlank(message = "IMAGE may not be null")
 	@Column(name = "product_image")
 	private String image;
 	
-	@NotBlank(message = "display may not be null")
+	//@NotBlank(message = "display may not be null")
 	@Column(name = "product_display")
 	private String display;
 	
-	@Camera
+	//@Camera
 	@Column(name = "product_camera")
 	private String camera;
 	
-	@NotNull(message = "amount may not be null")
+	//@NotNull(message = "amount may not be null")
 	@Column(name = "product_amount")
 	private Integer amount; 
 	
-	@NotNull(message = "status may not be null")
+	//@NotNull(message = "status may not be null")
 	@Column(name = "product_status")
 	private Integer status; 
 	
-	@Battery
+	//@Battery
 	@Column(name = "product_battery")
 	private String battery; 
 	
